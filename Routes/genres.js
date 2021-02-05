@@ -1,21 +1,12 @@
-const Joi = require('joi');
 const mongoose = require('mongoose');
 const express = require('express');
-
+const {Genre, validateGenre} = require('../models/genre');
 const router = express.Router();
 
-const Genre = mongoose.model('Genre',new mongoose.Schema({
-    name:{
-        type:String,
-        required:true,
-        minlength:5,
-        maxlength:50
-    }
-}));
 //get
 router.get('/',async (req,res)=>{
-    const genres = await Genre.find().sort('name');
-    res.send(genres);
+    const genre = await Genre.find().sort('name');
+    res.send(genre);
 });
 
 //post
@@ -57,14 +48,5 @@ router.get('/id:',async (req,res)=>{
 
     res.send(genre);
 });
-
-function validateGenre(genre){
-
-    const schema = Joi.object({
-        name: Joi.string().min(5).required()
-    });
-
-    return schema.validate(genre);
-}
 
 module.exports =router;

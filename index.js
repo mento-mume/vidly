@@ -1,4 +1,6 @@
-const mongoose =require('mongoose')
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
+const mongoose =require('mongoose');
 const genres = require('./Routes/genres');
 const customers = require('./Routes/customers');
 const movies = require('./Routes/movies');

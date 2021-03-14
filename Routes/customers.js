@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth');
 const {Customer, validateCustomer} = require('../models/customer');
 const mongoose = require('mongoose');
 const express = require('express');
@@ -11,7 +12,7 @@ router.get('/',async (req,res)=>{
 });
 
 //post
-router.post('/',async (req,res)=>{
+router.post('/',auth,async (req,res)=>{
     //validate input
     const {error} = validateCustomer(req.body);
     if(error) res.status('400').send(error.details[0].message);
@@ -25,7 +26,7 @@ router.post('/',async (req,res)=>{
 
 });
 //put
-router.put('/:id',async (req,res)=>{
+router.put('/:id',auth,async (req,res)=>{
     const {error} = validateCustomer(req.body);
     if(error) res.status('400').send(error.details[0].message);
 
@@ -37,7 +38,7 @@ router.put('/:id',async (req,res)=>{
 
 });
 //delete
-router.delete('/:id',async (req,res)=>{
+router.delete('/:id',auth,async (req,res)=>{
     const customer =await Genre.findByIdAndRemove(req.params.id);
 
     if(!customer) return res.status('404').send('the customer with the id could not be found');

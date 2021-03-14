@@ -11,7 +11,7 @@ router.get('/',async (req,res)=>{
 });
 
 //post
-router.post('/',async (req,res)=>{
+router.post('/', async (req,res)=>{
     //validate input
     const {error} = validateMovie(req.body);
     if(error) res.status('400').send(error.details[0].message);

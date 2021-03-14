@@ -1,3 +1,6 @@
+require('express-async-errors');
+const admin = require('../middleware/admin');
+const auth = require('../middleware/auth');
 const mongoose = require('mongoose');
 const express = require('express');
 const {Genre, validateGenre} = require('../models/genre');
@@ -5,12 +8,14 @@ const router = express.Router();
 
 //get
 router.get('/',async (req,res)=>{
+   throw new Error('could not get the genres');
     const genre = await Genre.find().sort('name');
     res.send(genre);
+  
 });
 
 //post
-router.post('/',async (req,res)=>{
+router.post('/', auth, async (req,res)=>{
     //validate input
     const {error} = validateGenre(req.body);
     if(error) res.status('400').send(error.details[0].message);
@@ -21,7 +26,7 @@ router.post('/',async (req,res)=>{
 
 });
 //put
-router.put('/:id',async (req,res)=>{
+router.put('/:id',auth, async (req,res)=>{
     const {error} = validateGenre(req.body);
     if(error) res.status('400').send(error.details[0].message);
 
@@ -33,7 +38,7 @@ router.put('/:id',async (req,res)=>{
 
 });
 //delete
-router.delete('/:id',async (req,res)=>{
+router.delete('/:id',[auth,admin],async (req,res)=>{
     const genre =await Genre.findByIdAndRemove(req.params.id);
 
     if(!genre) return res.status('404').send('the genre with the id could not be found');

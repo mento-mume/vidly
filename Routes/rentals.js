@@ -47,7 +47,7 @@ router.post('/',async (req,res) =>{
         .run();
 
         res.send(rental); 
-    } 
+552    } 
     catch (ex) {
         res.status(500).send('something went wrong');
     }
